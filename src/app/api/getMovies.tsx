@@ -1,22 +1,37 @@
 async function getData() {
+	const api_key: string = `cb3cfca375b67807e1dcbe36bda1afc3`;
+	const base_url: string = "https://api.themoviedb.org/3/tv/popular";
+	const endpoint: string = `${base_url}?api_key=cb3cfca375b67807e1dcbe36bda1afc3&language=en-US&page=1`;
+
 	const options = {
 		method: "GET",
 		headers: {
 			accept: "application/json",
-			Authorization: `Bearer${process.env.API_TOKEN}`,
+			Authorization: `Bearer ${process.env.API_TOKEN}`,
 		},
 	};
 
-	const url: string =
-		"https://api.themoviedb.org/3/tv/popular?language=en-US&page=1";
-	const response = fetch(url, options)
-		.then((response) => response.json())
-		.catch((err) => console.error(err));
+	try {
+		const response = await fetch(endpoint, options);
 
-	return response;
+		if (!response.ok) {
+			throw new Error(`Failed to fetch data, status: ${response.status}`);
+		}
+
+		const data = await response.json();
+		return data;
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
 }
 
 export default async function getMovies() {
-	const data = await getData();
-	return data;
+	try {
+		const data = await getData();
+		return data;
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
 }
