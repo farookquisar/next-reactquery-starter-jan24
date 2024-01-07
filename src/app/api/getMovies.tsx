@@ -3,7 +3,7 @@ async function getData() {
 		method: "GET",
 		headers: {
 			accept: "application/json",
-			Authorization: process.env.API_KEY,
+			Authorization: `Bearer ${process.env.API_TOKEN}`,
 		},
 	};
 
